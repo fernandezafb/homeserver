@@ -1,0 +1,249 @@
+services:
+#Indexers service
+  prowlarr:
+    container_name: prowlarr
+    image: ghcr.io/hotio/prowlarr
+    ports:
+      - '9696:9696'
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - UMASK=002
+      - TZ=Europe/Madrid
+    volumes:
+      - /home/docker/config/mediaserver/prowlarr:/config
+    restart: unless-stopped
+
+#Shows service
+  sonarr:
+    container_name: sonarr
+    image: lscr.io/linuxserver/sonarr:develop
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Madrid
+    ports:
+      - '8989:8989'
+    volumes:
+      - /home/docker/config/mediaserver/sonarr:/config
+      - /home/docker:/data
+    restart: unless-stopped
+
+#Shows service (anime config)
+  sonarr-anime:
+    container_name: sonarr-anime
+    image: lscr.io/linuxserver/sonarr:develop
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Madrid
+    ports:
+      - '8990:8989'
+    volumes:
+      - /home/docker/config/mediaserver/sonarr-anime:/config
+      - /home/docker:/data
+    restart: unless-stopped
+
+#Films service
+  radarr:
+    container_name: radarr
+    image: lscr.io/linuxserver/radarr:latest
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Madrid
+    ports:
+      - '7878:7878'
+    volumes:
+      - /home/docker/config/mediaserver/radarr:/config
+      - /home/docker:/data
+    restart: unless-stopped
+
+#Music service
+  lidarr:
+    container_name: lidarr
+    image: lscr.io/linuxserver/lidarr:latest
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Madrid
+    volumes:
+      - /home/docker/config/mediaserver/lidarr:/config
+      - /home/docker:/data
+    ports:
+      - '8686:8686'
+    restart: unless-stopped
+
+#Books service
+  readarr:
+    container_name: readarr
+    image: lscr.io/linuxserver/readarr:develop
+    ports:
+      - '8787:8787'
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Madrid
+    volumes:
+      - /home/docker/config/mediaserver/readarr:/config
+      - /home/docker:/data
+    restart: unless-stopped
+
+#Books service (audio books config)
+  readarr-audio-books:
+    container_name: readarr-audio-books
+    image: lscr.io/linuxserver/readarr:develop
+    ports:
+      - '8786:8787'
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Madrid
+    volumes:
+      - /home/docker/config/mediaserver/readarr-audio-books:/config
+      - /home/docker:/data
+    restart: unless-stopped
+
+#Subtitles service
+  bazarr:
+    container_name: bazarr
+    image: lscr.io/linuxserver/bazarr:latest
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Madrid
+    volumes:
+      - /home/docker/config/mediaserver/bazarr:/config
+      - /home/docker:/data
+    ports:
+      - '6767:6767'
+    restart: unless-stopped
+    
+  bazarr-anime:
+    container_name: bazarr-anime
+    image: lscr.io/linuxserver/bazarr:latest
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Madrid
+    volumes:
+      - /home/docker/config/mediaserver/bazarr-anime:/config
+      - /home/docker:/data
+    ports:
+      - '6766:6767'
+    restart: unless-stopped
+    
+#TrashGuides Syncer
+  recyclarr:
+    image: ghcr.io/recyclarr/recyclarr
+    container_name: recyclarr
+    user: 1000:1000
+    volumes:
+      - /home/docker/config/mediaserver/recyclarr:/config
+    environment:
+      - TZ=Europe/Madrid
+      - RECYCLARR_CREATE_CONFIG=true
+      - CRON_SCHEDULE=@daily
+
+#Media server service
+  jellyfin:
+    container_name: jellyfin
+    image: lscr.io/linuxserver/jellyfin:latest
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Madrid
+    ports:
+      - '8096:8096'
+    devices:
+      - '/dev/dri:/dev/dri' # For hardware acceleration
+    volumes:
+      - /home/docker/config/mediaserver/jellyfin:/config
+      - /home/docker/media:/data/media
+    restart: unless-stopped
+
+  ombi:
+    container_name: ombi
+    image: lscr.io/linuxserver/ombi:latest
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Madrid
+    volumes:
+      - /home/docker/config/mediaserver/ombi:/config
+    ports:
+      - '3579:3579'
+    restart: unless-stopped
+
+#Torrent service
+  qflood:
+    container_name: qflood
+    image: ghcr.io/hotio/qflood
+    ports:
+      - "8082:8080"
+      - "3000:3000"
+    # - "3005:3000"
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - UMASK=002
+      - TZ=Europe/Madrid
+      - FLOOD_AUTH=false
+    volumes:
+      - /home/docker/config/mediaserver/qflood:/config
+      - /home/docker/torrents:/data/torrents
+    restart: unless-stopped
+
+#Usenet service
+  sabnzbd:
+    container_name: sabnzbd
+    image: lscr.io/linuxserver/sabnzbd:latest
+    ports:
+      - "8081:8081"
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Madrid
+    volumes:
+      - /home/docker/config/mediaserver/sabnzbd:/config
+      - /home/docker/usenet:/data/usenet
+    restart: unless-stopped
+    
+#ed2k service
+#  amule:
+#    image: ngosang/amule
+#    container_name: amule
+#    environment:
+#      - PUID=1000
+#      - PGID=1000
+#      - TZ=Europe/Madrid
+#      - GUI_PWD=abo632
+#      - WEBUI_PWD=abo632
+#      - MOD_AUTO_RESTART_ENABLED=true
+#      - MOD_AUTO_RESTART_CRON=0 6 * * *
+#      - MOD_AUTO_SHARE_ENABLED=false
+#      - MOD_AUTO_SHARE_DIRECTORIES=/incoming;/my_movies
+#      - MOD_FIX_KAD_GRAPH_ENABLED=true
+#    ports:
+#      - "4711:4711" # web ui
+#      - "4712:4712" # remote gui, webserver, cmd ...
+#      - "4662:4662" # ed2k tcp
+#      - "4665:4665/udp" # ed2k global search udp (tcp port +3)
+#      - "4672:4672/udp" # ed2k udp
+#    volumes:
+#      - /home/docker/config/mediaserver/amule:/home/amule/.aMule
+#      - /home/docker/amule/completed:/incoming
+#      - /home/docker/amule/temp:/temp
+#    restart: unless-stopped
+
+#Captcha service
+  flaresolverr:
+    container_name: flaresolverr
+    image: 'ghcr.io/flaresolverr/flaresolverr:latest'
+    ports:
+      - '8191:8191'
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Madrid
+    restart: unless-stopped
