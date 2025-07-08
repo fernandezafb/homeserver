@@ -74,36 +74,6 @@ services:
       - '8686:8686'
     restart: unless-stopped
 
-#Books service
-  readarr:
-    container_name: readarr
-    image: lscr.io/linuxserver/readarr:amd64-develop
-    ports:
-      - '8787:8787'
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Europe/Madrid
-    volumes:
-      - /home/docker/config/mediaserver/readarr:/config
-      - /home/docker:/data
-    restart: unless-stopped
-
-#Books service (audio books config)
-  readarr-audio-books:
-    container_name: readarr-audio-books
-    image: lscr.io/linuxserver/readarr:amd64-develop
-    ports:
-      - '8786:8787'
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Europe/Madrid
-    volumes:
-      - /home/docker/config/mediaserver/readarr-audio-books:/config
-      - /home/docker:/data
-    restart: unless-stopped
-
 #Subtitles service
   bazarr:
     container_name: bazarr
