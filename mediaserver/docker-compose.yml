@@ -2,7 +2,7 @@ services:
 #Indexers service
   prowlarr:
     container_name: prowlarr
-    image: ghcr.io/hotio/prowlarr
+    image: ghcr.io/hotio/prowlarr:latest
     ports:
       - '9696:9696'
     environment:
@@ -17,7 +17,7 @@ services:
 #Shows service
   sonarr:
     container_name: sonarr
-    image: lscr.io/linuxserver/sonarr:develop
+    image: lscr.io/linuxserver/sonarr:latest
     environment:
       - PUID=1000
       - PGID=1000
@@ -32,7 +32,7 @@ services:
 #Shows service (anime config)
   sonarr-anime:
     container_name: sonarr-anime
-    image: lscr.io/linuxserver/sonarr:develop
+    image: lscr.io/linuxserver/sonarr:latest
     environment:
       - PUID=1000
       - PGID=1000
@@ -135,7 +135,7 @@ services:
     
 #TrashGuides Syncer
   recyclarr:
-    image: ghcr.io/recyclarr/recyclarr
+    image: ghcr.io/recyclarr/recyclarr:latest
     container_name: recyclarr
     user: 1000:1000
     volumes:
@@ -178,7 +178,7 @@ services:
 #Torrent service
   qflood:
     container_name: qflood
-    image: ghcr.io/hotio/qflood
+    image: ghcr.io/hotio/qflood:latest
     ports:
       - "8082:8080"
       - "3000:3000"
@@ -239,7 +239,7 @@ services:
 #Captcha service
   flaresolverr:
     container_name: flaresolverr
-    image: 'ghcr.io/flaresolverr/flaresolverr:latest'
+    image: ghcr.io/flaresolverr/flaresolverr:latest
     ports:
       - '8191:8191'
     environment:
