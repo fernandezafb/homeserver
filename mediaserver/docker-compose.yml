@@ -2,12 +2,11 @@ services:
 #Indexers service
   prowlarr:
     container_name: prowlarr
-    image: ghcr.io/hotio/prowlarr:latest
+    image: lscr.io/linuxserver/prowlarr:latest
+    user: "1000:1000"
     ports:
       - '9696:9696'
     environment:
-      - PUID=1000
-      - PGID=1000
       - UMASK=002
       - TZ=Europe/Madrid
     volumes:
