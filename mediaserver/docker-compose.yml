@@ -145,23 +145,42 @@ services:
     restart: unless-stopped
 
 #Torrent service
-  qflood:
-    container_name: qflood
-    image: ghcr.io/hotio/qflood:latest
-    ports:
-      - "8082:8080"
-      - "3000:3000"
-    # - "3005:3000"
+  # qflood:
+  #   container_name: qflood
+  #   image: ghcr.io/hotio/qflood:latest
+  #   ports:
+  #     - "8082:8080"
+  #     - "3000:3000"
+  #   # - "3005:3000"
+  #   environment:
+  #     - PUID=1000
+  #     - PGID=1000
+  #     - UMASK=002
+  #     - TZ=Europe/Madrid
+  #     - FLOOD_AUTH=false
+  #   volumes:
+  #     - /home/docker/config/mediaserver/qflood:/config
+  #     - /home/docker/torrents:/data/torrents
+  #   restart: unless-stopped
+
+  ## Default credentials of qBittorrent - Username: admin password: adminadmin ##
+  ## Change password after install from UI --> Tools --> Options --> WebUI ##
+  qbittorrent:
+    container_name: qbittorrent
+    image: lscr.io/linuxserver/qbittorrent:latest
     environment:
       - PUID=1000
       - PGID=1000
-      - UMASK=002
-      - TZ=Europe/Madrid
-      - FLOOD_AUTH=false
+      - TZ=UTC
+      - WEBUI_PORT=5080
     volumes:
-      - /home/docker/config/mediaserver/qflood:/config
-      - /home/docker/torrents:/data/torrents
-    restart: unless-stopped
+      - /home/docker/config/mediaserver/qbittorrent:/config
+      - /home/docker/torrents:/data/torrents:/downloads
+    ports:
+      - 5080:5080
+      - 6881:6881
+      - 6881:6881/udp
+    restart: "unless-stopped"
 
 #Usenet service
   sabnzbd:
