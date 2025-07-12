@@ -144,25 +144,6 @@ services:
       - '3579:3579'
     restart: unless-stopped
 
-#Torrent service
-  # qflood:
-  #   container_name: qflood
-  #   image: ghcr.io/hotio/qflood:latest
-  #   ports:
-  #     - "8082:8080"
-  #     - "3000:3000"
-  #   # - "3005:3000"
-  #   environment:
-  #     - PUID=1000
-  #     - PGID=1000
-  #     - UMASK=002
-  #     - TZ=Europe/Madrid
-  #     - FLOOD_AUTH=false
-  #   volumes:
-  #     - /home/docker/config/mediaserver/qflood:/config
-  #     - /home/docker/torrents:/data/torrents
-  #   restart: unless-stopped
-
   # Default credentials of qBittorrent are printed in the container logs when running
   # Change password after install from UI --> Tools --> Options --> WebUI
   qbittorrent:
@@ -175,7 +156,7 @@ services:
       - WEBUI_PORT=5080
     volumes:
       - /home/docker/config/mediaserver/qbittorrent:/config
-      - /home/docker/torrents:/downloads
+      - /home/docker/torrents:/data/downloads
     ports:
       - 5080:5080
       - 6881:6881
