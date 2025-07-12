@@ -163,8 +163,8 @@ services:
   #     - /home/docker/torrents:/data/torrents
   #   restart: unless-stopped
 
-  ## Default credentials of qBittorrent - Username: admin password: adminadmin ##
-  ## Change password after install from UI --> Tools --> Options --> WebUI ##
+  # Default credentials of qBittorrent are printed in the container logs when running
+  # Change password after install from UI --> Tools --> Options --> WebUI
   qbittorrent:
     container_name: qbittorrent
     image: lscr.io/linuxserver/qbittorrent:latest
@@ -175,7 +175,7 @@ services:
       - WEBUI_PORT=5080
     volumes:
       - /home/docker/config/mediaserver/qbittorrent:/config
-      - /home/docker/torrents:/data/torrents:/downloads
+      - /home/docker/torrents:/downloads
     ports:
       - 5080:5080
       - 6881:6881
