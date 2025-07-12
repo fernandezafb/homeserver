@@ -156,7 +156,7 @@ services:
       - WEBUI_PORT=5080
     volumes:
       - /home/docker/config/mediaserver/qbittorrent:/config
-      - /home/docker/torrents:/data/downloads
+      - /home/docker/downloads:/data/downloads
     ports:
       - 5080:5080
       - 6881:6881
