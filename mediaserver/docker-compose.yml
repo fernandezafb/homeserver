@@ -106,10 +106,11 @@ services:
   recyclarr:
     image: ghcr.io/recyclarr/recyclarr:latest
     container_name: recyclarr
-    user: 1000:1000
     volumes:
       - /home/docker/config/mediaserver/recyclarr:/config
     environment:
+      - PUID=1000
+      - PGID=1000
       - TZ=Europe/Madrid
       - RECYCLARR_CREATE_CONFIG=true
       - CRON_SCHEDULE=@daily
