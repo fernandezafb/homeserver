@@ -1,0 +1,105 @@
+services:
+  wireguard:
+    image: lscr.io/linuxserver/wireguard:latest
+    container_name: wireguard
+    cap_add:
+      - NET_ADMIN
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Madrid
+      - SERVERURL=lexhome.ddns.net
+      - SERVERPORT=51820 #optional default
+      #- SERVERPORT=53 #optional, changed to avoid public wifi restrictions but needed for adguard dns now
+      - PEERS=5 #optional
+      - PEERDNS=9.9.9.9,149.112.112.112 # Quad9
+      #- PEERDNS=auto
+      - INTERNAL_SUBNET=10.13.13.0 #optional
+      - ALLOWEDIPS=0.0.0.0/0 #optional
+      - PERSISTENTKEEPALIVE_PEERS= #optional
+      - LOG_CONFS=true #optional
+    volumes:
+      - /home/docker/config/homelab/wireguard:/config
+    ports:
+      - 51820:51820/udp
+    sysctls:
+      - net.ipv4.conf.all.src_valid_mark=1
+    restart: unless-stopped
+
+  # adguardhome:
+  #   image: adguard/adguardhome
+  #   container_name: adguardhome
+  #   ports:
+  #     - 53:53/tcp
+  #     - 53:53/udp
+  #     - 784:784/udp
+  #     - 853:853/tcp
+  #     - 3001:3000/tcp
+  #     - 8083:80/tcp
+  #     - 8443:443/tcp
+  #     # The ones below to use dhcp
+  #     #- 67:67/udp
+  #     #- 68:68/tcp
+  #     #- 68:68/udp
+  #   volumes:
+  #     - /home/docker/config/homelab/adguardhome/work:/opt/adguardhome/work
+  #     - /home/docker/config/homelab/adguardhome/conf:/opt/adguardhome/conf
+  #   restart: unless-stopped
+
+  portainer:
+    image: portainer/portainer-ce:latest
+    container_name: portainer
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Madrid
+    ports:
+      - 9443:9443
+    volumes:
+      - /home/docker/config/homelab/portainer:/data
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: unless-stopped
+
+  homepage:
+    image: ghcr.io/gethomepage/homepage:latest
+    container_name: homepage
+    environment:
+      - PUID=1000
+      - PGID=1000
+    ports:
+      - 80:3000
+    env_file: /home/docker/config/homelab/homepage/.env
+    volumes:
+      - /home/docker/config/homelab/homepage:/app/config # Make sure your local config directory exists
+      - /home/docker/config/homelab/homepage/icons:/app/public/icons
+      - /var/run/docker.sock:/var/run/docker.sock:ro # optional, for docker integrations
+    restart: unless-stopped
+  
+  syncthing:
+    image: lscr.io/linuxserver/syncthing:latest
+    container_name: syncthing
+    hostname: syncthing #optional
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Madrid
+    volumes:
+      - /home/docker/config/homelab/syncthing:/config
+      - /home/docker:/data
+    ports:
+      - 8384:8384
+      - 22000:22000/tcp
+      - 22000:22000/udp
+      - 21027:21027/udp
+    restart: unless-stopped
+
+  homeassistant:
+    container_name: homeassistant
+    image: "ghcr.io/home-assistant/home-assistant:stable"
+    volumes:
+      - /home/docker/config/homelab/home-assistant:/config
+      - /etc/localtime:/etc/localtime:ro
+      - /run/dbus:/run/dbus:ro
+    restart: unless-stopped
+    privileged: true
+    network_mode: host
