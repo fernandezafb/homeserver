@@ -21,4 +21,4 @@
   - Radarr: HD Bluray + WEB
   - Sonarr: WEB-1080p
 - An example of current profiles used is included in the repo: `recyclarr.yml`. You can use it as the main config file found in `recyclarr/config` path.
-
+- Use of secrets: [Link](https://recyclarr.dev/wiki/yaml/secrets-reference/).

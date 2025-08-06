@@ -35,9 +35,6 @@
 # Instance Definition: https://recyclarr.dev/wiki/yaml/config-reference/basic/
 radarr:
   hd-bluray-web:
-    base_url: http://localhost:7878 
-    api_key: Put your API key here
-
     include:
       # Comment out any of the following includes to disable them
       - template: radarr-quality-definition-movie
@@ -94,9 +91,6 @@ radarr:
 # Instance Definition: https://recyclarr.dev/wiki/yaml/config-reference/basic/
 sonarr:
   web-1080p-v4:
-    base_url: http://localhost:8989 
-    api_key: Put your API key here
-
     include:
       # Comment out any of the following includes to disable them
       - template: sonarr-quality-definition-series
