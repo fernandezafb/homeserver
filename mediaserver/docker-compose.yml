@@ -114,6 +114,7 @@ services:
       - TZ=Europe/Madrid
       - RECYCLARR_CREATE_CONFIG=true
       - CRON_SCHEDULE=@daily
+    init: true # Use init to handle potential daily cron zombie processes
 
 #Media server service
   jellyfin:
